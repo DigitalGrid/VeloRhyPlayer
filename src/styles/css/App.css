@@ -23,6 +23,31 @@
   to { transform: rotate(360deg); }
 }
 
+div.row-centered {
+  text-align:center;
+}
+
+div.col-centered {
+  display:inline-block;
+  float:none;
+  /* reset the text-align */
+  text-align:left;
+  /* inline-block space fix
+  margin-right:-4px;*/
+}
+
+div.col-fixed {
+  width:320px;
+}
+
+div.col-min {
+  min-width:320px;
+}
+
+div.col-max {
+  max-width:320px;
+}
+
 .rc-slider {
   position: relative;
   height: 14px;

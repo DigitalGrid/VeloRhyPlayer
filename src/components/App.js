@@ -1,12 +1,15 @@
 //libraries
 import React, { Component } from 'react';
 import Tone from 'tone';
-import Slider from 'rc-slider';
-import { Handle } from 'rc-slider';
+import Slider, { Handle } from 'rc-slider';
+import { Grid, Row, Col } from 'react-bootstrap';
+
 //images
 import logo from '../images/logo.svg';
+
 //styles
 import '../styles/css/App.css';
+
 //components
 import ChordForm from './ChordForm';
 import SequenceForm from './SequenceForm';
@@ -76,6 +79,16 @@ class App extends Component {
     midSlider.part.start(0)
 
     veloRhySliders.push(midSlider);
+
+    let highSlider = new VeloRhySlider()
+    highSlider.part.start(0)
+
+    veloRhySliders.push(highSlider);
+
+    let topSlider = new VeloRhySlider()
+    topSlider.part.start(0)
+
+    veloRhySliders.push(topSlider);
 
     this.setState({
       veloRhySliders: veloRhySliders,
@@ -220,29 +233,53 @@ class App extends Component {
   render() {
     return (
       <div className="app">
-        <div className="app-header">
-          <img src={logo} className="app-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <div className="app-chords">
-          {this.state.chords}
+        <Grid>
+          <Row className="show-grid">
+            <div className="app-header">
+              <img src={logo} className="app-logo" alt="logo" />
+              <h2>Welcome to React</h2>
+            </div>
+          </Row>
 
-          {this.state.chords.map((chord, index) => {
-            return(
-              <div key={index+"D"} className="app-chord-arpeggio">
-                <ChordForm key={index+"C"} index={index} chords={TONES} value={chord} updateChordsApp={this.updateChordsApp} />
-                <ArpeggioForm key={index+"A"} index={index} arpeggios={ARPEGGIO_SCALES} value={this.state.arpeggioScales[index]} updateArpeggioScalesApp={this.updateArpeggioScalesApp}  />
+          <Row className="show-grid row-centered">
+            <div className="app-chords">
+              {this.state.chords.map((chord, index) => {
+                return(
+                  <Col className="col-centered" key={"col-"+index} xs={6} md={2}>
+                    <div key={"app-chord-arpeggio-"+index} className="app-chord-arpeggio">
+                      <ChordForm key={"chordform-"+index} index={index} chords={TONES} value={chord} updateChordsApp={this.updateChordsApp} />
+                      <ArpeggioForm key={"arpeggioform-"+index} index={index} arpeggios={ARPEGGIO_SCALES} value={this.state.arpeggioScales[index]} updateArpeggioScalesApp={this.updateArpeggioScalesApp}  />
+                    </div>
+                  </Col>
+                )
+              })}
+            </div>
+          </Row>
+
+          <Row className="show-grid">
+            <Col md={8} mdOffset={2}>
+              <div className="app-tempo">
+                <Slider min={60} max={180} defaultValue={120} handle={this.updateTempoApp}/>
               </div>
-            )
-          })}
-        </div>
-        <div className="app-tempo">
-          <Slider min={60} max={180} defaultValue={120} handle={this.updateTempoApp}/>
-        </div>
-        <div className="player-boxes">
-          <PlayerBox index={0} updateOctaveApp={this.updateOctaveApp} updateArpStyleApp={this.updateArpStyleApp} xMethod={this.updateRhythmApp} yMethod={this.updateVelocityApp} xPattern={RHYTHMS} yPattern={""} />
-          <PlayerBox index={1} updateOctaveApp={this.updateOctaveApp} updateArpStyleApp={this.updateArpStyleApp} xMethod={this.updateRhythmApp} yMethod={this.updateVelocityApp} xPattern={RHYTHMS} yPattern={""} />
-        </div>
+            </Col>
+          </Row>
+
+          <Row className="show-grid">
+            <div className="app-player-boxes">
+
+              {this.state.veloRhySliders.map((veloRhySlider, index) => {
+                return(
+                  <Col  key={"col-"+index} xs={6} md={3}>
+                    <div key={"app-player-box-"+index} className="app-player-box">
+                      <PlayerBox index={index} updateOctaveApp={this.updateOctaveApp} updateArpStyleApp={this.updateArpStyleApp} xMethod={this.updateRhythmApp} yMethod={this.updateVelocityApp} xPattern={RHYTHMS} yPattern={""} />
+                    </div>
+                  </Col>
+                )
+              })}
+
+            </div>
+          </Row>
+        </Grid>
       </div>
     );
   }

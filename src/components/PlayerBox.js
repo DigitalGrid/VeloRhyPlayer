@@ -37,13 +37,9 @@ export default class PlayerBox extends Component {
   render() {
     return (
       <div className="player-box">
-        <div className="slider-box">
-          <SliderBox index={this.props.index} xMethod={this.props.xMethod} yMethod={this.props.yMethod} xPattern={this.props.xPattern} yPattern={this.props.yPattern} />
-        </div>
+        <SliderBox index={this.props.index} xMethod={this.props.xMethod} yMethod={this.props.yMethod} xPattern={this.props.xPattern} yPattern={this.props.yPattern} />
         <div className="options-box">
-          {this.state.arpeggioStyle.pattern}
           <SequenceForm sequences={ARPEGGIO_STYLES} value={this.state.arpeggioStyle.value} updateSequences={this.updateArpeggioStyle} />
-          {this.state.octave}
           <NumberForm numbers={OCTAVES} value={this.state.octave} updateNumbers={this.updateOctave} />
         </div>
       </div>

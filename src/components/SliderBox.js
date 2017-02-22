@@ -83,7 +83,7 @@ export default class SliderBox extends Component {
 
   render() {
     return (
-      <div>
+      <div className="slider-box">
         <InputSlider
           className="slider slider-xy"
           axis='xy'
