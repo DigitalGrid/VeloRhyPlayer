@@ -75,7 +75,20 @@ class App extends Component {
     let veloRhySliders = []
     veloRhySliders.push(bassSlider);
 
-    let midSlider = new VeloRhySlider()
+    let midSlider = new VeloRhySlider(new Tone.PolySynth(3, Tone.Synth, {
+			"oscillator" : {
+				"type" : "fatsawtooth",
+				"count" : 3,
+				"spread" : 30
+			},
+			"envelope": {
+				"attack": 0.01,
+				"decay": 0.1,
+				"sustain": 0.5,
+				"release": 0.4,
+				"attackCurve" : "exponential"
+			},
+		}).toMaster())
     midSlider.part.start(0)
 
     veloRhySliders.push(midSlider);
@@ -85,7 +98,11 @@ class App extends Component {
 
     veloRhySliders.push(highSlider);
 
-    let topSlider = new VeloRhySlider()
+    let topSlider = new VeloRhySlider(new Tone.PolySynth(6, Tone.Synth, {
+			"oscillator" : {
+				"partials" : [0, 2, 3, 4],
+			}
+		}).toMaster())
     topSlider.part.start(0)
 
     veloRhySliders.push(topSlider);
@@ -118,8 +135,6 @@ class App extends Component {
     Tone.Transport.loopEnd = '1m'
     Tone.Transport.loop = true
     Tone.Transport.start('+0.1')
-
-    console.log(Tone.context);
   }
 
   /*
