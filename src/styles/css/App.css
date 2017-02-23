@@ -9,9 +9,10 @@
 
 .app-header {
   background-color: #222;
-  height: 150px;
-  padding: 20px;
+  height: 200px;
+  padding: 50px;
   color: white;
+  margin-bottom: 30px;
 }
 
 .app-intro {
@@ -21,6 +22,10 @@
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+div.row {
+  margin-bottom: 30px;
 }
 
 div.row-centered {
@@ -70,7 +75,7 @@ div.col-max {
   left: 0;
   height: 4px;
   border-radius: 6px;
-  background-color: #abe2fb;
+  background-color: #7eabd8;
 }
 
 .rc-slider * {
@@ -93,7 +98,7 @@ div.col-max {
   height: 14px;
   cursor: pointer;
   border-radius: 50%;
-  border: solid 2px #96dbfa;
+  border: solid 2px #5C98D2;
   background-color: #fff;
 }
 

@@ -118,6 +118,8 @@ class App extends Component {
     Tone.Transport.loopEnd = '1m'
     Tone.Transport.loop = true
     Tone.Transport.start('+0.1')
+
+    console.log(Tone.context);
   }
 
   /*
@@ -213,14 +215,6 @@ class App extends Component {
     this.setState({veloRhySliders: veloRhySliders})
   }
 
-  /*const handle = (props) => {
-  //const { value, dragging, index, ...restProps } = props;
-    console.log("hej")
-    /*return (
-
-    );*/
-  //};*/
-
   updateTempoApp(props) {
     const { value, dragging, index, ...restProps } = props;
     Tone.Transport.bpm.value = value;
@@ -237,7 +231,6 @@ class App extends Component {
           <Row className="show-grid">
             <div className="app-header">
               <img src={logo} className="app-logo" alt="logo" />
-              <h2>Welcome to React</h2>
             </div>
           </Row>
 
@@ -266,7 +259,6 @@ class App extends Component {
 
           <Row className="show-grid">
             <div className="app-player-boxes">
-
               {this.state.veloRhySliders.map((veloRhySlider, index) => {
                 return(
                   <Col  key={"col-"+index} xs={6} md={3}>
@@ -276,7 +268,6 @@ class App extends Component {
                   </Col>
                 )
               })}
-
             </div>
           </Row>
         </Grid>

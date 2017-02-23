@@ -209,5 +209,4 @@ export default class VeloRhySlider {
     this.part.loop = true
   }
 
-
 }

@@ -1,5 +1,5 @@
 .slider-box {
-  background-color: #999;
+  background-color: #5C98D2;
   border-radius: 36px;
   width: 260px;
   height: 260px;
@@ -19,7 +19,7 @@
 
 .u-slider {
     position: absolute;
-    background-color: #abe2fb;
+    background-color: #5C98D2;
     top: 36px;
     right: 36px;
     bottom: 36px;
