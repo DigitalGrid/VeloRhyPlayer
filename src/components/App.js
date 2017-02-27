@@ -15,6 +15,7 @@ import ChordForm from './ChordForm';
 import SequenceForm from './SequenceForm';
 import ArpeggioForm from './ArpeggioForm';
 import PlayerBox from './PlayerBox';
+import Analyser from './Analyser';
 
 //constants
 import { TONES, RHYTHMS, ARPEGGIO_SCALES } from '../js/constants';
@@ -30,6 +31,7 @@ class App extends Component {
       chords: ["D", "G", "A", "F"],
       arpeggioScales: [ARPEGGIO_SCALES[0], ARPEGGIO_SCALES[0], ARPEGGIO_SCALES[0], ARPEGGIO_SCALES[0]],
       veloRhySliders: [],
+      fft: new Tone.Analyser("fft", 64),
     }
 
     this.updateChordsApp = this.updateChordsApp.bind(this);
@@ -58,7 +60,7 @@ class App extends Component {
     				"decay" : 0.8
     			},
     			"octaves" : 10
-    		}).toMaster();
+    		}).fan(this.state.fft).toMaster();
 
     var kickPart = new Tone.Part(function(time, value){
       kick.triggerAttackRelease(value.note, "8n", time, value.velocity)
@@ -69,31 +71,30 @@ class App extends Component {
 
 
 
-    let bassSlider = new VeloRhySlider()
+    let bassSlider = new VeloRhySlider(new Tone.PolySynth(6, Tone.Synth, {
+			"oscillator" : {
+				"partials" : [0, 2, 3, 4],
+			}
+		}).fan(this.state.fft).toMaster())
     bassSlider.part.start(0)
 
     let veloRhySliders = []
     veloRhySliders.push(bassSlider);
 
-    let midSlider = new VeloRhySlider(new Tone.PolySynth(3, Tone.Synth, {
+    let midSlider = new VeloRhySlider(new Tone.PolySynth(6, Tone.Synth, {
 			"oscillator" : {
-				"type" : "fatsawtooth",
-				"count" : 3,
-				"spread" : 30
-			},
-			"envelope": {
-				"attack": 0.01,
-				"decay": 0.1,
-				"sustain": 0.5,
-				"release": 0.4,
-				"attackCurve" : "exponential"
-			},
-		}).toMaster())
+				"partials" : [0, 2, 3, 4],
+			}
+		}).fan(this.state.fft).toMaster())
     midSlider.part.start(0)
 
     veloRhySliders.push(midSlider);
 
-    let highSlider = new VeloRhySlider()
+    let highSlider = new VeloRhySlider(new Tone.PolySynth(6, Tone.Synth, {
+			"oscillator" : {
+				"partials" : [0, 2, 3, 4],
+			}
+		}).fan(this.state.fft).toMaster())
     highSlider.part.start(0)
 
     veloRhySliders.push(highSlider);
@@ -102,7 +103,7 @@ class App extends Component {
 			"oscillator" : {
 				"partials" : [0, 2, 3, 4],
 			}
-		}).toMaster())
+		}).fan(this.state.fft).toMaster())
     topSlider.part.start(0)
 
     veloRhySliders.push(topSlider);
@@ -245,7 +246,8 @@ class App extends Component {
         <Grid>
           <Row className="show-grid">
             <div className="app-header">
-              <img src={logo} className="app-logo" alt="logo" />
+
+              <Analyser fft={this.state.fft} />
             </div>
           </Row>
 
