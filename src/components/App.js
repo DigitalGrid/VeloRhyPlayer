@@ -53,6 +53,26 @@ class App extends Component {
       {"time": "0:3", "note": "C1", "velocity": 0.6},
     ]
 
+    //the synth settings
+		var synthSettings = {
+			"oscillator": {
+				"detune": 0,
+				"type": "custom",
+				"partials" : [2, 1, 2, 2],
+				"phase": 0,
+				"volume": 0
+			},
+			"envelope": {
+				"attack": 0.005,
+				"decay": 0.3,
+				"sustain": 0.2,
+				"release": 1,
+			},
+			"portamento": 0.01,
+			"volume": -20
+		};
+
+
     var kick = new Tone.MembraneSynth({
     			"envelope" : {
     				"sustain" : 0,
@@ -71,39 +91,23 @@ class App extends Component {
 
 
 
-    let bassSlider = new VeloRhySlider(new Tone.PolySynth(6, Tone.Synth, {
-			"oscillator" : {
-				"partials" : [0, 2, 3, 4],
-			}
-		}).fan(this.state.fft).toMaster())
+    let bassSlider = new VeloRhySlider(new Tone.Synth(synthSettings).fan(this.state.fft).toMaster())
     bassSlider.part.start(0)
 
     let veloRhySliders = []
     veloRhySliders.push(bassSlider);
 
-    let midSlider = new VeloRhySlider(new Tone.PolySynth(6, Tone.Synth, {
-			"oscillator" : {
-				"partials" : [0, 2, 3, 4],
-			}
-		}).fan(this.state.fft).toMaster())
+    let midSlider = new VeloRhySlider(new Tone.Synth(synthSettings).fan(this.state.fft).toMaster())
     midSlider.part.start(0)
 
     veloRhySliders.push(midSlider);
 
-    let highSlider = new VeloRhySlider(new Tone.PolySynth(6, Tone.Synth, {
-			"oscillator" : {
-				"partials" : [0, 2, 3, 4],
-			}
-		}).fan(this.state.fft).toMaster())
+    let highSlider = new VeloRhySlider(new Tone.Synth(synthSettings).fan(this.state.fft).toMaster())
     highSlider.part.start(0)
 
     veloRhySliders.push(highSlider);
 
-    let topSlider = new VeloRhySlider(new Tone.PolySynth(6, Tone.Synth, {
-			"oscillator" : {
-				"partials" : [0, 2, 3, 4],
-			}
-		}).fan(this.state.fft).toMaster())
+    let topSlider = new VeloRhySlider(new Tone.Synth(synthSettings).fan(this.state.fft).toMaster())
     topSlider.part.start(0)
 
     veloRhySliders.push(topSlider);
