@@ -1,5 +1,6 @@
 .app {
   text-align: center;
+  background-color: #1B1B22;
 }
 
 .app-logo {
@@ -9,10 +10,22 @@
 
 .app-header {
   height: 200px;
-  color: white;
+  color: #fff;
   margin-top: 30px;
   padding-left: 15px;
   padding-right: 15px;
+  margin-bottom: 30px;
+}
+
+.app-tempo {
+  margin-top: -35px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-bottom: 30px;
+}
+
+.app-chords {
+  margin-bottom: 30px;
 }
 
 .app-intro {
@@ -24,9 +37,9 @@
   to { transform: rotate(360deg); }
 }
 
-div.row {
+/*div.row {
   margin-bottom: 30px;
-}
+}*/
 
 div.row-centered {
   text-align:center;
@@ -75,7 +88,7 @@ div.col-max {
   left: 0;
   height: 4px;
   border-radius: 6px;
-  background-color: #7eabd8;
+  background-color: #3bbabd;
 }
 
 .rc-slider * {
@@ -98,7 +111,7 @@ div.col-max {
   height: 14px;
   cursor: pointer;
   border-radius: 50%;
-  border: solid 2px #5C98D2;
+  border: solid 2px #028689;
   background-color: #fff;
 }
 

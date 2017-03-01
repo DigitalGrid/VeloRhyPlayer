@@ -250,8 +250,13 @@ class App extends Component {
         <Grid>
           <Row className="show-grid">
             <div className="app-header">
-
               <Analyser fft={this.state.fft} />
+            </div>
+          </Row>
+
+          <Row className="show-grid">
+            <div className="app-tempo">
+              <Slider min={60} max={180} defaultValue={120} handle={this.updateTempoApp}/>
             </div>
           </Row>
 
@@ -268,14 +273,6 @@ class App extends Component {
                 )
               })}
             </div>
-          </Row>
-
-          <Row className="show-grid">
-            <Col md={8} mdOffset={2}>
-              <div className="app-tempo">
-                <Slider min={60} max={180} defaultValue={120} handle={this.updateTempoApp}/>
-              </div>
-            </Col>
           </Row>
 
           <Row className="show-grid">
