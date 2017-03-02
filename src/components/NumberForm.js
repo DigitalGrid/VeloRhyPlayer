@@ -1,5 +1,9 @@
 //libraries
 import React, { Component } from 'react'
+
+//styles
+import '../styles/css/Form.css';
+
 //components
 import { FormControl } from 'react-bootstrap';
 

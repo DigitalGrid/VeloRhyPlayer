@@ -1,14 +1,23 @@
 .app {
   text-align: center;
-  background-color: #1B1B22;
-}
-
-.app-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
 }
 
 .app-header {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.app-title h1 {
+  color: #E9ECED;
+}
+
+.app-body {
+  background-color: rgba(27, 27, 34, 0.9);
+  padding: 20px 40px 50px 40px;
+  border-radius: 10px;
+}
+
+.app-analyser {
   height: 200px;
   color: #fff;
   margin-top: 30px;
@@ -32,14 +41,8 @@
   font-size: large;
 }
 
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
+/*.app-player-boxses*/
 
-/*div.row {
-  margin-bottom: 30px;
-}*/
 
 div.row-centered {
   text-align:center;
@@ -52,18 +55,49 @@ div.col-centered {
   text-align:left;
   /* inline-block space fix
   margin-right:-4px;*/
+
 }
 
 div.col-fixed {
   width:320px;
 }
 
-div.col-min {
-  min-width:320px;
+div.col-max {
+  max-width: 150px;
 }
 
-div.col-max {
-  max-width:320px;
+@media (max-width: 680px) {
+  div.col-max {
+    max-width: 110px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 520px) {
+  .app-player-boxes .col-xs-6 {
+    width: 100%;
+  }
+
+  div.col-max {
+    max-width: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  div.col-max {
+    max-width: 200px;
+    margin-bottom: 10px;
+  }
+
+  .app-chords {
+    margin-bottom: 20px;
+  }
+}
+
+@media (min-width: 1200px) {
+  div.app .container {
+    width: 1240px;
+  }
 }
 
 .rc-slider {

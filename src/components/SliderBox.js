@@ -24,7 +24,7 @@ export default class SliderBox extends Component {
   handleChange(pos) {
     let xVal = pos.x
     let yVal = Math.round((1-pos.y) * 100) / 100;
-    
+
     this.updatePattern(this.props.index, xVal, "x", this.props.xPattern, this.state.xOldPosition)
     this.updatePattern(this.props.index, yVal, "y", this.props.yPattern, this.state.yOldPosition)
 

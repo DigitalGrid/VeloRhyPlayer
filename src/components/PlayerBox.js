@@ -46,10 +46,10 @@ export default class PlayerBox extends Component {
         <SliderBox index={this.props.index} xMethod={this.props.xMethod} yMethod={this.props.yMethod} xPattern={this.props.xPattern} yPattern={this.props.yPattern} />
 
         <Row className="show-grid options-box row-centered">
-          <Col className="col-centered" xs={6} md={6}>
+          <Col className="col-centered" xs={5} sm={5} md={6}>
             <SequenceForm sequences={ARPEGGIO_STYLES} value={this.state.arpeggioStyle.value} updateSequences={this.updateArpeggioStyle} />
           </Col>
-          <Col className="col-centered" xs={6} md={6}>
+          <Col className="col-centered" xs={5} sm={5} md={6}>
             <NumberForm numbers={OCTAVES} value={this.state.octave} updateNumbers={this.updateOctave} />
           </Col>
         </Row>
