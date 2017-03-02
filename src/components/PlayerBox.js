@@ -11,7 +11,7 @@ import SequenceForm from './SequenceForm';
 import NumberForm from './NumberForm';
 
 //constants
-import { RHYTHMS, ARPEGGIO_SCALES, ARPEGGIO_STYLES, OCTAVES } from '../js/constants';
+import { ARPEGGIO_STYLES, OCTAVES } from '../js/constants';
 
 export default class PlayerBox extends Component {
   constructor() {

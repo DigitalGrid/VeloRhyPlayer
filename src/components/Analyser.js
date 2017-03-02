@@ -36,9 +36,6 @@ export default class Analyser extends Component {
   		let val = values[i] / 255;
   		let x = this.state.dimensions.width * (i / len);
   		let y = val * this.state.dimensions.height;
-  		//this.ctx.fillStyle = "rgba(92, 152, 210, " + val + ")";
-      //this.ctx.fillStyle = "rgba(226, 112, 147, " + val + ")";
-      //this.ctx.fillStyle = "rgba(80, 144, 207, " + val + ")";
       this.ctx.fillStyle = "rgba(59, 186, 189, " + val + ")";
       this.ctx.fillRect(x, this.state.dimensions.height - y, barWidth, this.state.dimensions.height);
   	}

@@ -1,14 +1,21 @@
+@font-face {
+    font-family: lato;
+    src: url(../fonts/Lato-Regular.ttf);
+}
+
 .app {
   text-align: center;
 }
 
 .app-header {
-  margin-top: 30px;
-  margin-bottom: 30px;
+  margin-top: 35px;
+  margin-bottom: 35px;
 }
 
 .app-title h1 {
   color: #E9ECED;
+  font-family: lato;
+  font-size: 3.2em;
 }
 
 .app-body {

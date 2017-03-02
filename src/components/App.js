@@ -4,15 +4,11 @@ import Tone from 'tone';
 import Slider, { Handle } from 'rc-slider';
 import { Grid, Row, Col } from 'react-bootstrap';
 
-//images
-import logo from '../images/logo.svg';
-
 //styles
 import '../styles/css/App.css';
 
 //components
 import ChordForm from './ChordForm';
-import SequenceForm from './SequenceForm';
 import ArpeggioForm from './ArpeggioForm';
 import PlayerBox from './PlayerBox';
 import Analyser from './Analyser';
