@@ -1,5 +1,9 @@
 //libraries
 import React, { Component } from 'react'
+
+//styles
+import '../styles/css/Form.css';
+
 //components
 import { FormControl } from 'react-bootstrap';
 
@@ -28,9 +32,11 @@ export default class SequenceForm extends Component {
 
   render() {
     return(
-      <FormControl componentClass="select" value={this.props.value} onChange={this.handleChange}>
-        {this.renderSequences(this.props.sequences)}
-      </FormControl>
+      <span className="custom-dropdown custom-dropdown--color">
+        <FormControl className="custom-dropdown__select custom-dropdown__select--color" componentClass="select" value={this.props.value} onChange={this.handleChange}>
+          {this.renderSequences(this.props.sequences)}
+        </FormControl>
+      </span>
     );
   }
 }

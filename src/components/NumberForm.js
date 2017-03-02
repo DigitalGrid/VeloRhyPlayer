@@ -1,5 +1,9 @@
 //libraries
 import React, { Component } from 'react'
+
+//styles
+import '../styles/css/Form.css';
+
 //components
 import { FormControl } from 'react-bootstrap';
 
@@ -30,9 +34,11 @@ export default class NumberForm extends Component {
 
   render() {
     return(
-      <FormControl componentClass="select" value={this.state.value} onChange={this.handleChange}>
-        {this.renderNumbers(this.props.numbers)}
-      </FormControl>
+      <span className="custom-dropdown custom-dropdown--color">
+        <FormControl className="custom-dropdown__select custom-dropdown__select--color" componentClass="select" value={this.state.value} onChange={this.handleChange}>
+          {this.renderNumbers(this.props.numbers)}
+        </FormControl>
+      </span>
     );
   }
 }

@@ -4,15 +4,11 @@ import Tone from 'tone';
 import Slider, { Handle } from 'rc-slider';
 import { Grid, Row, Col } from 'react-bootstrap';
 
-//images
-import logo from '../images/logo.svg';
-
 //styles
 import '../styles/css/App.css';
 
 //components
 import ChordForm from './ChordForm';
-import SequenceForm from './SequenceForm';
 import ArpeggioForm from './ArpeggioForm';
 import PlayerBox from './PlayerBox';
 import Analyser from './Analyser';
@@ -247,51 +243,58 @@ class App extends Component {
   render() {
     return (
       <div className="app">
+
         <Grid>
-          <Row className="show-grid">
-            <div className="app-header">
-
-              <Analyser fft={this.state.fft} />
+          <div className="app-header">
+            <div className="app-title">
+              <h1>VeloRhyPlayer</h1>
             </div>
-          </Row>
+          </div>
 
-          <Row className="show-grid row-centered">
-            <div className="app-chords">
-              {this.state.chords.map((chord, index) => {
-                return(
-                  <Col className="col-centered" key={"col-"+index} xs={6} md={2}>
-                    <div key={"app-chord-arpeggio-"+index} className="app-chord-arpeggio">
-                      <ChordForm key={"chordform-"+index} index={index} chords={TONES} value={chord} updateChordsApp={this.updateChordsApp} />
-                      <ArpeggioForm key={"arpeggioform-"+index} index={index} arpeggios={ARPEGGIO_SCALES} value={this.state.arpeggioScales[index]} updateArpeggioScalesApp={this.updateArpeggioScalesApp}  />
-                    </div>
-                  </Col>
-                )
-              })}
-            </div>
-          </Row>
+          <div className="app-body">
+            <Row className="show-grid">
+              <div className="app-analyser">
+                <Analyser fft={this.state.fft} />
+              </div>
+            </Row>
 
-          <Row className="show-grid">
-            <Col md={8} mdOffset={2}>
+            <Row className="show-grid">
               <div className="app-tempo">
                 <Slider min={60} max={180} defaultValue={120} handle={this.updateTempoApp}/>
               </div>
-            </Col>
-          </Row>
+            </Row>
 
-          <Row className="show-grid">
-            <div className="app-player-boxes">
-              {this.state.veloRhySliders.map((veloRhySlider, index) => {
-                return(
-                  <Col  key={"col-"+index} xs={6} md={3}>
-                    <div key={"app-player-box-"+index} className="app-player-box">
-                      <PlayerBox index={index} updateOctaveApp={this.updateOctaveApp} updateArpStyleApp={this.updateArpStyleApp} xMethod={this.updateRhythmApp} yMethod={this.updateVelocityApp} xPattern={RHYTHMS} yPattern={""} />
-                    </div>
-                  </Col>
-                )
-              })}
-            </div>
-          </Row>
+            <Row className="show-grid row-centered">
+              <div className="app-chords">
+                {this.state.chords.map((chord, index) => {
+                  return(
+                    <Col className="col-centered col-max app-chord" key={"col-"+index} xs={6} md={2}>
+                      <div key={"app-chord-arpeggio-"+index} className="app-chord-arpeggio">
+                        <ChordForm key={"chordform-"+index} index={index} chords={TONES} value={chord} updateChordsApp={this.updateChordsApp} />
+                        <ArpeggioForm key={"arpeggioform-"+index} index={index} arpeggios={ARPEGGIO_SCALES} value={this.state.arpeggioScales[index]} updateArpeggioScalesApp={this.updateArpeggioScalesApp}  />
+                      </div>
+                    </Col>
+                  )
+                })}
+              </div>
+            </Row>
+
+            <Row className="show-grid">
+              <div className="app-player-boxes">
+                {this.state.veloRhySliders.map((veloRhySlider, index) => {
+                  return(
+                    <Col  key={"col-"+index} xs={6} md={3}>
+                      <div key={"app-player-box-"+index} className="app-player-box">
+                        <PlayerBox index={index} updateOctaveApp={this.updateOctaveApp} updateArpStyleApp={this.updateArpStyleApp} xMethod={this.updateRhythmApp} yMethod={this.updateVelocityApp} xPattern={RHYTHMS} yPattern={""} />
+                      </div>
+                    </Col>
+                  )
+                })}
+              </div>
+            </Row>
+          </div>
         </Grid>
+
       </div>
     );
   }

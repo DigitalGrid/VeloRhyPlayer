@@ -146,7 +146,7 @@ export default class VeloRhySlider {
   */
   updateRhythm(rhythm) {
     let values = []
-    let events = this.part._events
+    //let events = this.part._events
 
     //update rhythm
     this.currentRhythmPattern = rhythm ? rhythm : this.currentRhythmPattern

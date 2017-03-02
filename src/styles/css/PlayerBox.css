@@ -1,3 +1,41 @@
+.options-box {
+  margin-bottom: 20px;
+}
+
 .player-box div.row {
-  margin-top: 20px;
+  margin-top: 10px;
+}
+
+
+
+@media (max-width: 662px) {
+  .player-box div.row div {
+    max-width: 100px;
+  }
+}
+
+@media (max-width: 520px) {
+  .player-box div.row div {
+    max-width: 150px;
+  }
+}
+
+@media (min-width: 768px) {
+  .options-box {
+    margin-bottom: 20px;
+  }
+
+  .player-box div.row {
+    margin-top: 10px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .options-box {
+    margin-bottom: 20px;
+  }
+
+  .player-box div.row {
+    margin-top: 20px;
+  }
 }
