@@ -20,8 +20,9 @@
 
 .app-body {
   background-color: rgba(27, 27, 34, 0.9);
-  padding: 20px 40px 50px 40px;
+  padding: 10px 40px 40px 40px;
   border-radius: 10px;
+  margin-bottom: 40px;
 }
 
 .app-analyser {
@@ -46,6 +47,10 @@
 
 .app-intro {
   font-size: large;
+}
+
+.app-drum-sliders #col-drums-1 {
+  float: right;
 }
 
 /*.app-player-boxses*/
@@ -83,6 +88,15 @@ div.col-max {
 @media (max-width: 520px) {
   .app-player-boxes .col-xs-6 {
     width: 100%;
+  }
+
+  .app-drum-sliders .col-xs-6 {
+    width: 100%;
+    margin-bottom: 30px;
+  }
+
+  .app-drum-sliders #col-drums-1 {
+    float: left;
   }
 
   div.col-max {

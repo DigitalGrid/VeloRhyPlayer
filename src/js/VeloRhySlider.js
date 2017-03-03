@@ -14,8 +14,9 @@ export default class VeloRhySlider {
   /*
   * constructor of the class VeloRhySlider
   * @param synth - synth to use
+  * @param tones - Boolean - if true include tones in all notes
   */
-  constructor(synth) {
+  constructor(synth, tones=true) {
     this.part = {} // Velocity/Rhythm/Arpeggio part
     this.synth = synth ? synth : new Tone.FMSynth().toMaster();
     this.velocityRange = 0
@@ -25,7 +26,7 @@ export default class VeloRhySlider {
     this.currentChord = "C" //parrent state?
     this.noteLength = "22n"
 
-    this.updateSynth()
+    this.updateSynth(null, null, tones)
     this.updateVelocity(0)
   }
 
@@ -51,31 +52,41 @@ export default class VeloRhySlider {
 
   /*
   * buildNotes (helper method) - build all notes that's going to play with detailed information
+  * @param tones - boolean - if true build all notes with tones
   * @return values - Array - all notes that's going to play, includes time, note and velocity
   */
-  buildNotes() {
+  buildNotes(tones = true) {
     let values = []
     let rhyLength = this.currentRhythmPattern.length
-    let notes = TONES.slice() //copy array
-    notes = this.reorderNotes(notes)
+    let notes
+
+    if(tones) {
+      notes = TONES.slice()
+      notes = this.reorderNotes(notes)
+    }
 
     for(let i=0; i<rhyLength; i++) {
       let currentRP = this.currentRhythmPattern[i]
-      let currentAP = this.currentArpeggioPattern.scale[this.currentArpeggioPattern.style[i]]
-      let currentNote
-      //console.log(this.currentArpeggioPattern.style)
 
-      if (currentAP > 35) {
-        currentNote = notes[currentAP-36].note + (notes[currentAP-36].octave+3)
-      } else if (currentAP > 23) {
-        currentNote = notes[currentAP-24].note + (notes[currentAP-24].octave+2)
-      } else if (currentAP > 11) {
-        currentNote = notes[currentAP-12].note + (notes[currentAP-12].octave+1)
+      if(tones) {
+        let currentAP = this.currentArpeggioPattern.scale[this.currentArpeggioPattern.style[i]]
+        let currentNote
+
+        if (currentAP > 35) {
+          currentNote = notes[currentAP-36].note + (notes[currentAP-36].octave+3)
+        } else if (currentAP > 23) {
+          currentNote = notes[currentAP-24].note + (notes[currentAP-24].octave+2)
+        } else if (currentAP > 11) {
+          currentNote = notes[currentAP-12].note + (notes[currentAP-12].octave+1)
+        } else {
+          currentNote = notes[currentAP].note + notes[currentAP].octave
+        }
+
+        values[i] = {"time": currentRP, "note": currentNote, "velocity": 1}
       } else {
-        currentNote = notes[currentAP].note + notes[currentAP].octave
+        values[i] = {"time": currentRP, "velocity": 1}
       }
 
-      values[i] = {"time": currentRP, "note": currentNote, "velocity": 1}
     }
     return values
   }
@@ -143,15 +154,16 @@ export default class VeloRhySlider {
   /*
   * updateRhythm - update the current rhythm
   * @param rhythm - Array
+  * @param tones - boolean - if true include tones in notes
   */
-  updateRhythm(rhythm) {
+  updateRhythm(rhythm, tones = true) {
     let values = []
     //let events = this.part._events
 
     //update rhythm
     this.currentRhythmPattern = rhythm ? rhythm : this.currentRhythmPattern
     //build all notes
-    values = this.buildNotes()
+    values = this.buildNotes(tones)
     //update all notes
     this.part.removeAll()
     for(var i=0; i<values.length; i++) {
@@ -197,14 +209,22 @@ export default class VeloRhySlider {
   * @param synth - Object - the new synth
   * @param noteLength - String - length of all notes
   * @param velocity - Number - velocity of all notes
+  * @param tones - Boolean - if true include tones in all notes
   */
-  updateSynth(synth, velocity) {
+  updateSynth(synth, velocity, tones=true) {
     this.synth = synth ? synth : this.synth
 
-    let values = this.buildNotes()
-    this.part = new Tone.Part((time, value) => {
-      this.synth.triggerAttackRelease(value.note, this.noteLength, time, value.velocity)
-    }, values)
+    let values = this.buildNotes(tones)
+
+    if(tones) {
+      this.part = new Tone.Part((time, value) => {
+        this.synth.triggerAttackRelease(value.note, this.noteLength, time, value.velocity)
+      }, values)
+    } else {
+      this.part = new Tone.Part((time, value) => {
+        this.synth.triggerAttackRelease(this.noteLength, time, value.velocity)
+      }, values)
+    }
 
     this.part.loop = true
   }
