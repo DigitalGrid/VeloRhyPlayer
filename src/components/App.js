@@ -1,5 +1,6 @@
 //libraries
 import React, { Component } from 'react';
+import classNames from 'classnames';
 import Tone from 'tone';
 import Slider, { Handle } from 'rc-slider';
 import { Grid, Row, Col } from 'react-bootstrap';
@@ -14,12 +15,12 @@ import PlayerBox from './PlayerBox';
 import Analyser from './Analyser';
 import SliderBox from './SliderBox';
 
-
 //constants
 import { TONES, RHYTHMS, ARPEGGIO_SCALES, RHYTHMS_SNARE, RHYTHMS_KICK } from '../js/constants';
+
 //js
 import VeloRhySlider from '../js/VeloRhySlider';
-
+import { bassSynth, lowSynth, midSynth, highSynth, kickSynth, snareSynth } from '../js/synths'
 
 class App extends Component {
   constructor() {
@@ -27,6 +28,7 @@ class App extends Component {
 
     this.state = {
       chords: ["D", "G", "A", "F"],
+      currentChord: -1,
       arpeggioScales: [ARPEGGIO_SCALES[0], ARPEGGIO_SCALES[0], ARPEGGIO_SCALES[0], ARPEGGIO_SCALES[0]],
       veloRhySliders: [],
       fft: new Tone.Analyser("fft", 64),
@@ -43,166 +45,31 @@ class App extends Component {
   }
 
   componentWillMount() {
-
-    var testArray = [
-      {"time": "0", "note": "G0", "velocity": 0.8},
-      {"time": "0:1", "note": "G0", "velocity": 0.8},
-      {"time": "0:2", "note": "G0", "velocity": 0.8},
-      {"time": "0:3", "note": "G0", "velocity": 0.8},
-    ]
-
-    var testArray2 = [
-      {"time": "0:1", "velocity": 0.3},
-      {"time": "0:3", "velocity": 0.3},
-    ]
-
-    var freeverb = new Tone.Freeverb().toMaster();
-    freeverb.dampening.value = 100;
-
-    var filter = new Tone.Filter(5000, "lowpass");
-
-
-    //the synth settings
-		var synthSettings = {
-			"oscillator": {
-				"detune": 0,
-				"type": "custom",
-				"partials" : [2, 1, 2, 2],
-				"phase": 0,
-				"volume": 0
-			},
-			"envelope": {
-				"attack": 0.005,
-				"decay": 0.3,
-				"sustain": 0.2,
-				"release": 1,
-			},
-			"portamento": 0.01,
-			"volume": -20
-		};
-
-    var midSynth = new Tone.FMSynth({
-			"modulationIndex" : 12.22,
-			"envelope" : {
-				"attack" : 0.01,
-				"decay" : 0.2
-			},
-			"modulation" : {
-				"type" : "square"
-			},
-			"modulationEnvelope" : {
-				"attack" : 0.2,
-				"decay" : 0.01
-			}
-		}).connect(freeverb);
-
-
-
-    //DRUMS//
-	//and a compressor
-	var drumCompress = new Tone.Compressor({
-		"threshold" : -30,
-		"ratio" : 6,
-		"attack" : 0.3,
-		"release" : 0.1
-	}).toMaster();
-	var distortion = new Tone.Distortion({
-		"distortion" : 0.4,
-		"wet" : 0.4
-	});
-
-
-
-
-
-
-    var kick = new Tone.MembraneSynth({
-    			"envelope" : {
-    				"sustain" : 0,
-    				"attack" : 0.02,
-    				"decay" : 0.8
-    			},
-    			"octaves" : 10
-    		}).toMaster();
-
-
-    var snare = new Tone.NoiseSynth({
-      "noise" : {
-        "type" : "pink"
-      },
-			"volume" : -5,
-			"envelope" : {
-				"attack" : 0.001,
-				"decay" : 0.2,
-				"sustain" : 0.05
-			},
-			"filterEnvelope" : {
-				"attack" : 0.001,
-				"decay" : 0.1,
-				"sustain" : 0
-			}
-		}).connect(filter).toMaster();
-
-    console.log(snare)
-
-    /*
-    * ----------------------------
-    */
-
-
-
-var bassline = new Tone.FMSynth();
-var basslineVolume = new Tone.Volume(-5.25);
-var basslineDistortion = new Tone.Distortion(2.5);
-var basslineDelay = new Tone.FeedbackDelay(0.25);
-
-bassline.chain(basslineDistortion, basslineDelay);
-bassline.chain(basslineDistortion, basslineVolume);
-bassline.chain(basslineVolume, Tone.Master);
-
-
-var bassline2 = new Tone.FMSynth();
-var basslineVolume = new Tone.Volume(-5.25);
-var basslineDistortion = new Tone.Distortion(2.5);
-var basslineDelay = new Tone.FeedbackDelay(0.25);
-
-bassline2.chain(basslineDistortion, basslineDelay);
-bassline2.chain(basslineDistortion, basslineVolume);
-bassline2.chain(basslineVolume, Tone.Master);
-
-
     let veloRhySliders = []
 
-    let kickSlider = new VeloRhySlider(kick.fan(this.state.fft));
+    let kickSlider = new VeloRhySlider(kickSynth.fan(this.state.fft));
     kickSlider.part.start(0)
-
     veloRhySliders.push({"veloRhySlider":kickSlider, "followChords":false, "xPattern": RHYTHMS_KICK, "yPattern": ""});
 
-    let snareSlider = new VeloRhySlider(snare.fan(this.state.fft), false);
+    let snareSlider = new VeloRhySlider(snareSynth.fan(this.state.fft), false);
     snareSlider.part.start(0)
-
     veloRhySliders.push({"veloRhySlider":snareSlider, "followChords":false, "xPattern": RHYTHMS_SNARE, "yPattern": ""});
 
-    let bassSlider = new VeloRhySlider(bassline.fan(this.state.fft));
+    let bassSlider = new VeloRhySlider(bassSynth.fan(this.state.fft))
     bassSlider.part.start(0)
-
-
     veloRhySliders.push({"veloRhySlider":bassSlider, "followChords":true, "xPattern": RHYTHMS, "yPattern": ""});
 
-    let midSlider = new VeloRhySlider(bassline2)
-    midSlider.part.start(0)
+    let lowSlider = new VeloRhySlider(lowSynth.fan(this.state.fft));
+    lowSlider.part.start(0)
+    veloRhySliders.push({"veloRhySlider":lowSlider, "followChords":true, "xPattern": RHYTHMS, "yPattern": ""});
 
+    let midSlider = new VeloRhySlider(midSynth.fan(this.state.fft))
+    midSlider.part.start(0)
     veloRhySliders.push({"veloRhySlider":midSlider, "followChords":true, "xPattern": RHYTHMS, "yPattern": ""});
 
-    let highSlider = new VeloRhySlider(midSynth.fan(this.state.fft).toMaster())
+    let highSlider = new VeloRhySlider(highSynth.fan(this.state.fft))
     highSlider.part.start(0)
-
     veloRhySliders.push({"veloRhySlider":highSlider, "followChords":true, "xPattern": RHYTHMS, "yPattern": ""});
-
-    let topSlider = new VeloRhySlider(new Tone.Synth(synthSettings).fan(this.state.fft).toMaster())
-    topSlider.part.start(0)
-
-    veloRhySliders.push({"veloRhySlider":topSlider, "followChords":true, "xPattern": RHYTHMS, "yPattern": ""});
 
     this.setState({
       veloRhySliders: veloRhySliders
@@ -212,34 +79,29 @@ bassline2.chain(basslineVolume, Tone.Master);
     * -----------------------------
     */
 
-    var counter = 0
-
-
     Tone.Transport.schedule(() => {
+      let currentChord = this.state.currentChord
+      currentChord++
+
+      if(currentChord === this.state.chords.length) {
+        currentChord = 0
+      }
+
       this.state.veloRhySliders.forEach((element, i) => {
         if(element.followChords) {
-          let chord = this.state.chords[counter]
-          let arpScale = this.state.arpeggioScales[counter].pattern
+          let chord = this.state.chords[currentChord]
+          let arpScale = this.state.arpeggioScales[currentChord].pattern
           element.veloRhySlider.updateChord(chord)
           element.veloRhySlider.updateArpScale(arpScale)
         }
       })
 
-      counter++
-      if(counter === this.state.chords.length) {
-        counter = 0
-      }
+      this.setState({currentChord:currentChord})
     }, 0)
 
     Tone.Transport.loopEnd = '1m'
     Tone.Transport.loop = true
-
-    //Tone.Buffer.onload = function(){
-      Tone.Transport.start('+0.1')
-  //  };
-
-
-
+    Tone.Transport.start('+0.1')
 
   }
 
@@ -353,6 +215,7 @@ bassline2.chain(basslineVolume, Tone.Master);
           <div className="app-header">
             <div className="app-title">
               <h1>VeloRhyPlayer</h1>
+              <h4>Click and drag stuff and make some music</h4>
             </div>
           </div>
 
@@ -373,7 +236,7 @@ bassline2.chain(basslineVolume, Tone.Master);
               <div className="app-chords">
                 {this.state.chords.map((chord, index) => {
                   return(
-                    <Col className="col-centered col-max app-chord" key={"col-"+index} xs={6} md={2}>
+                    <Col className={classNames("col-centered", "col-max", "app-chord", this.state.currentChord === index ? "active-chord" : "")} key={"col-"+index} xs={6} md={2}>
                       <div key={"app-chord-arpeggio-"+index} className="app-chord-arpeggio">
                         <ChordForm key={"chordform-"+index} index={index} chords={TONES} value={chord} updateChordsApp={this.updateChordsApp} />
                         <ArpeggioForm key={"arpeggioform-"+index} index={index} arpeggios={ARPEGGIO_SCALES} value={this.state.arpeggioScales[index]} updateArpeggioScalesApp={this.updateArpeggioScalesApp}  />
@@ -389,7 +252,7 @@ bassline2.chain(basslineVolume, Tone.Master);
                 {this.state.veloRhySliders.map((veloRhySlider, index) => {
                   if(veloRhySlider.followChords) {
                     return(
-                      <Col  key={"col-chords-"+index} xs={6} md={3}>
+                      <Col key={"col-chords-"+index} xs={6} md={3}>
                         <div key={"app-player-box-"+index} className="app-player-box">
                           <PlayerBox index={index} updateOctaveApp={this.updateOctaveApp} updateArpStyleApp={this.updateArpStyleApp} xMethod={this.updateRhythmApp} yMethod={this.updateVelocityApp} xPattern={veloRhySlider.xPattern} yPattern={veloRhySlider.yPattern} />
                         </div>
