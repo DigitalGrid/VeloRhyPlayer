@@ -16,7 +16,7 @@ import SliderBox from './SliderBox';
 
 
 //constants
-import { TONES, RHYTHMS, ARPEGGIO_SCALES } from '../js/constants';
+import { TONES, RHYTHMS, ARPEGGIO_SCALES, RHYTHMS_SNARE, RHYTHMS_KICK } from '../js/constants';
 //js
 import VeloRhySlider from '../js/VeloRhySlider';
 
@@ -58,6 +58,8 @@ class App extends Component {
 
     var freeverb = new Tone.Freeverb().toMaster();
     freeverb.dampening.value = 100;
+
+    var filter = new Tone.Filter(5000, "lowpass");
 
 
     //the synth settings
@@ -123,42 +125,10 @@ class App extends Component {
     			"octaves" : 10
     		}).toMaster();
 
-    /*var kickPart = new Tone.Part(function(time, value){
-      kick.triggerAttackRelease(value.note, "8n", time, value.velocity)
-    }, testArray)
-
-    kickPart.loop = true
-    kickPart.start(0)*/
-
-    //SNARE PART
-  	/*var snare = new Tone.Sampler({
-  		"url" : "../../audio/lala.wav",
-  		"envelope" : {
-  			"attack" : 0.01,
-  			"decay" : 0.05,
-  			"sustain" : 0
-  		},
-  	}).chain(distortion, drumCompress);
-
-  	var snarePart = new Tone.Sequence(function(time, velocity){
-  		snare.triggerAttackRelease(0, "8n", time, velocity);
-  	}, [null, 1, null, [1, 0.3]])*/
-
-    /*var sampler = new Tone.Sampler("../../audio/snare.mp3", function(){
-	    //repitch the sample down a half step
-
-	    sampler.triggerAttack(-1);
-    }).toMaster();*/
-
-    //var player = new Tone.Player("../../audio/snare.mp3")
-
-    //snarePart.loop = true;
-    //snarePart.start(0);
-
 
     var snare = new Tone.NoiseSynth({
       "noise" : {
-        "type" : "brown"
+        "type" : "pink"
       },
 			"volume" : -5,
 			"envelope" : {
@@ -171,14 +141,9 @@ class App extends Component {
 				"decay" : 0.1,
 				"sustain" : 0
 			}
-		}).connect(freeverb).toMaster();
+		}).connect(filter).toMaster();
 
-    /*var snarePart = new Tone.Part(function(time, value){
-      snare.triggerAttackRelease("8n", time, value.velocity)
-    }, testArray2)
-
-    snarePart.loop = true
-    snarePart.start(0)*/
+    console.log(snare)
 
     /*
     * ----------------------------
@@ -211,33 +176,33 @@ bassline2.chain(basslineVolume, Tone.Master);
     let kickSlider = new VeloRhySlider(kick.fan(this.state.fft));
     kickSlider.part.start(0)
 
-    veloRhySliders.push({"veloRhySlider":kickSlider, "followChords":false});
+    veloRhySliders.push({"veloRhySlider":kickSlider, "followChords":false, "xPattern": RHYTHMS_KICK, "yPattern": ""});
 
     let snareSlider = new VeloRhySlider(snare.fan(this.state.fft), false);
     snareSlider.part.start(0)
 
-    veloRhySliders.push({"veloRhySlider":snareSlider, "followChords":false});
+    veloRhySliders.push({"veloRhySlider":snareSlider, "followChords":false, "xPattern": RHYTHMS_SNARE, "yPattern": ""});
 
     let bassSlider = new VeloRhySlider(bassline.fan(this.state.fft));
     bassSlider.part.start(0)
 
 
-    veloRhySliders.push({"veloRhySlider":bassSlider, "followChords":true});
+    veloRhySliders.push({"veloRhySlider":bassSlider, "followChords":true, "xPattern": RHYTHMS, "yPattern": ""});
 
     let midSlider = new VeloRhySlider(bassline2)
     midSlider.part.start(0)
 
-    veloRhySliders.push({"veloRhySlider":midSlider, "followChords":true});
+    veloRhySliders.push({"veloRhySlider":midSlider, "followChords":true, "xPattern": RHYTHMS, "yPattern": ""});
 
     let highSlider = new VeloRhySlider(midSynth.fan(this.state.fft).toMaster())
     highSlider.part.start(0)
 
-    veloRhySliders.push({"veloRhySlider":highSlider, "followChords":true});
+    veloRhySliders.push({"veloRhySlider":highSlider, "followChords":true, "xPattern": RHYTHMS, "yPattern": ""});
 
     let topSlider = new VeloRhySlider(new Tone.Synth(synthSettings).fan(this.state.fft).toMaster())
     topSlider.part.start(0)
 
-    veloRhySliders.push({"veloRhySlider":topSlider, "followChords":true});
+    veloRhySliders.push({"veloRhySlider":topSlider, "followChords":true, "xPattern": RHYTHMS, "yPattern": ""});
 
     this.setState({
       veloRhySliders: veloRhySliders
@@ -426,7 +391,7 @@ bassline2.chain(basslineVolume, Tone.Master);
                     return(
                       <Col  key={"col-chords-"+index} xs={6} md={3}>
                         <div key={"app-player-box-"+index} className="app-player-box">
-                          <PlayerBox index={index} updateOctaveApp={this.updateOctaveApp} updateArpStyleApp={this.updateArpStyleApp} xMethod={this.updateRhythmApp} yMethod={this.updateVelocityApp} xPattern={RHYTHMS} yPattern={""} />
+                          <PlayerBox index={index} updateOctaveApp={this.updateOctaveApp} updateArpStyleApp={this.updateArpStyleApp} xMethod={this.updateRhythmApp} yMethod={this.updateVelocityApp} xPattern={veloRhySlider.xPattern} yPattern={veloRhySlider.yPattern} />
                         </div>
                       </Col>
                     )
@@ -434,13 +399,13 @@ bassline2.chain(basslineVolume, Tone.Master);
                 })}
               </div>
             </Row>
-            <Row className="show-grid">
+            <Row className="show-grid row-centered">
               <div className="app-drum-sliders">
                 {this.state.veloRhySliders.map((veloRhySlider, index) => {
                   if(!veloRhySlider.followChords) {
                     return(
-                      <Col key={"col-drums-"+index} id={"col-drums-"+index} xs={6} md={3}>
-                        <SliderBox index={index} xMethod={this.updateRhythmApp} yMethod={this.updateVelocityApp} xPattern={RHYTHMS} yPattern={""} />
+                      <Col key={"col-drums-"+index} className="col-centered" id={"col-drums-"+index} xs={6} md={3}>
+                        <SliderBox index={index} xMethod={this.updateRhythmApp} yMethod={this.updateVelocityApp} xPattern={veloRhySlider.xPattern} yPattern={veloRhySlider.yPattern} />
                       </Col>
                     )
                   }
