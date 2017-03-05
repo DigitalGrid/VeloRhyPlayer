@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 import Tone from 'tone';
 import Slider, { Handle } from 'rc-slider';
-import { Grid, Row, Col } from 'react-bootstrap';
+import { Grid, Row, Col, Glyphicon, Button } from 'react-bootstrap';
 
 //styles
 import '../styles/css/App.css';
@@ -28,6 +28,7 @@ class App extends Component {
 
     this.state = {
       chords: ["D", "G", "A", "F"],
+      "playing": false,
       currentChord: -1,
       arpeggioScales: [ARPEGGIO_SCALES[0], ARPEGGIO_SCALES[0], ARPEGGIO_SCALES[0], ARPEGGIO_SCALES[0]],
       veloRhySliders: [],
@@ -42,6 +43,7 @@ class App extends Component {
     this.updateOctaveApp = this.updateOctaveApp.bind(this);
     this.updateArpeggioScalesApp = this.updateArpeggioScalesApp.bind(this);
     this.updateTempoApp = this.updateTempoApp.bind(this);
+    this.togglePlaying = this.togglePlaying.bind(this);
   }
 
   componentWillMount() {
@@ -101,8 +103,20 @@ class App extends Component {
 
     Tone.Transport.loopEnd = '1m'
     Tone.Transport.loop = true
-    Tone.Transport.start('+0.1')
+    //Tone.Transport.start('+0.1')
+  }
 
+  /*
+  * start or stop player
+  */
+  togglePlaying() {
+    if(this.state.playing) {
+      Tone.Transport.stop();
+      this.setState({playing: false});
+    } else {
+      Tone.Transport.start('+0.1');
+      this.setState({playing: true});
+    }
   }
 
   /*
@@ -244,6 +258,14 @@ class App extends Component {
                     </Col>
                   )
                 })}
+              </div>
+            </Row>
+
+            <Row className="show-grid">
+              <div className="app-play">
+                <Button bsSize="large" onClick={this.togglePlaying}>
+                  <Glyphicon glyph={this.state.playing ? "pause" : "play"} />
+                </Button>
               </div>
             </Row>
 
